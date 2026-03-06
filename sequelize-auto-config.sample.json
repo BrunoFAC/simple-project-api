@@ -1,0 +1,19 @@
+{
+    "dialect": "mysql",
+    "port": 5432,
+    "host": "localhost",
+    "database": "",
+    "username": "",
+    "caseModel": "p",
+    "caseFile": "p",
+    "caseProp": "p",
+    "directory": "src/models",
+    "password": "",
+    "omitNull": true,
+    "output": "src/models",
+    "lang": "ts",
+    "additional": {
+        "freezeTableName": true,
+        "timestamps": false
+    }
+}

@@ -1,0 +1,9 @@
+node_modules
+sequelize-auto-config.json
+uploads/*/**/*.png
+uploads/*/**/*.jpg
+uploads/*/**/*.jpeg
+uploads/*/**/*.ico
+uploads/*/**/*.pdf
+.env
+/build

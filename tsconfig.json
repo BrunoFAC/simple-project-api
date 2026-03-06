@@ -1,0 +1,42 @@
+{
+    "ts-node": { "transpileOnly": true, "files": true },
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "outDir": "./build",
+        "removeComments": false,
+        "declaration": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowSyntheticDefaultImports": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "sourceMap": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "baseUrl": "./src",
+        "lib": ["ES2021"],
+        "types": ["node"],
+        "paths": {
+            "controllers/*": ["controllers/*"],
+            "controllers": ["controllers"],
+            "models/*": ["models/*"],
+            "dto/*": ["dto/*"],
+            "enums/*": ["enums/*"],
+            "extensions/*": ["extensions/*"],
+            "interfaces/*": ["interfaces/*"],
+            "modules/*": ["modules/*"],
+            "services/*": ["services/*"],
+            "middlewares/*": ["middlewares/*"],
+            "configs": ["configs"],
+            "utils": ["utils"],
+            "dayjsSetup": ["dayjsSetup"],
+            "database": ["database"],
+            "regex": ["regex"]
+        }
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+}
