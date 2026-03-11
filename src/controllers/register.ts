@@ -11,7 +11,7 @@ const routes = express.Router();
 /**
  * Register
  * @route POST /register
- * @group Register Telegram - Operations about registering the user.
+ * @group Register - Operations about registering the user.
  * @param {RegisterRequest.model} data.body.required
  * @returns 200
  * @returns 400

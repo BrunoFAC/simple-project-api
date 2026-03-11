@@ -10,7 +10,13 @@ export async function Authenticated(req: any, res: any, next: any) {
         return res.status(StatusCodeEnum.Unauthorized).send();
     }
 
-    const result = encryptor.jwtDecrypt(authorization);
+    const [scheme, token] = authorization.split(' ');
+
+    if (scheme !== 'Bearer' || !token) {
+        return res.status(StatusCodeEnum.Unauthorized).send();
+    }
+
+    const result = encryptor.jwtDecrypt(token);
 
     if (!result.ok) {
         return res.status(StatusCodeEnum.Unauthorized).send();
@@ -52,7 +58,13 @@ export async function OptionalAuthenticated(req: any, res: any, next: any) {
         return next();
     }
 
-    const result = encryptor.jwtDecrypt(authorization);
+    const [scheme, token] = authorization.split(' ');
+
+    if (scheme !== 'Bearer' || !token) {
+        return next();
+    }
+
+    const result = encryptor.jwtDecrypt(token);
 
     if (!result.ok) {
         return next();

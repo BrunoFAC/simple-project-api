@@ -35,11 +35,16 @@ app.use((err: any, req: any, res: any, next: any) => {
     res.status(StatusCodeEnum.InternalServerError).send(err);
 });
 
+app.listen(process.env.PORT, () => {
+    // eslint-disable-next-line no-console
+    console.log('Listening on port', process.env.PORT, '...');
+});
+
 if (process.env.NODE_ENV === 'development') {
     const options = {
         swaggerDefinition: {
             info: {
-                title: 'OnChainCourt API',
+                title: 'FeatureFlags API',
                 description: 'API documentation',
                 version: '1.0.0',
             },
