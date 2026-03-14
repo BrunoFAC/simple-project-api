@@ -4,9 +4,10 @@ import { AccountRoleEnum } from 'enums/AccountRoleEnum';
  * @typedef AccountListDTO
  * @property {number} id.required
  * @property {string} email.required
- * @property {string} name.required
+ * @property {string} username.required
  * @property {number} role.required
  * @property {Date} creationDate.required
+ * @property {Date} updateDate.required
  */
 export interface AccountListDTO {
     id: number;
@@ -14,6 +15,7 @@ export interface AccountListDTO {
     username: string;
     role: AccountRoleEnum;
     creationDate?: Date;
+    updateDate?: Date;
 }
 
 /**
@@ -41,11 +43,15 @@ export interface AccountSummaryDTO {
 }
 
 /**
- * @typedef AccountDTO
+ * @typedef AccountUpdateRoleDTO
  * @property {number} id.required
- * @property {string} name.required
+ * @property {string} email.required
+ * @property {number} role.required
+ * @property {string} username.required
  */
-export interface AccountDTO {
+export interface AccountUpdateRoleDTO {
     id: number;
-    name: string;
+    email: string;
+    username: string;
+    role: AccountRoleEnum;
 }

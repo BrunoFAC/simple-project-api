@@ -1,3 +1,5 @@
+import { AccountRoleEnum } from 'enums/AccountRoleEnum';
+
 /**
  * @typedef AccountsQuery
  * @property {number} top
@@ -8,4 +10,12 @@ export interface AccountsQuery {
     top?: string;
     skip?: string;
     search?: string;
+}
+
+/**
+ * @typedef AccountUpdateRoleRequest
+ * @property {number} role.required
+ */
+export interface AccountUpdateRoleRequest {
+    role: AccountRoleEnum;
 }

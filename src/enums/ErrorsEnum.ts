@@ -7,8 +7,10 @@ export enum ErrorsEnum {
     AccountFoundUsername,
     AccountFoundEmail,
     AccountNotFoundEmail,
+    AccountNotFound,
     WrongCredentials,
     UserLocked,
     FileTooLarge,
     InternalServerError,
+    InvalidEnum,
 }

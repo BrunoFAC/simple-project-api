@@ -1,14 +1,20 @@
 import dataContext from 'database';
 import { StatusCodeEnum } from 'enums/StatusCodeEnum';
 import express from 'express';
+import { validateAccountUpdateRole } from 'extensions/account';
 import fs from 'fs';
 import {
     AccountSummaryDTO,
+    AccountUpdateRoleDTO,
     TableResultAccountsListDTO,
 } from 'interfaces/dto/accounts';
-import { AccountsQuery } from 'interfaces/requests/accounts';
+import {
+    AccountsQuery,
+    AccountUpdateRoleRequest,
+} from 'interfaces/requests/accounts';
 import { IsAdmin } from 'middlewares/admin';
 import { Authenticated } from 'middlewares/authentication';
+import { Account, AccountAttributes } from 'models/Account';
 import multer from 'multer';
 import { Op, WhereOptions } from 'sequelize';
 
@@ -70,14 +76,13 @@ routes.get('/', Authenticated, IsAdmin, async (req, res) => {
     const resolvedSkip = Number(skip) || 0;
     const resolvedSearch = search ? search.toLowerCase() : undefined;
 
-    // Replace "any" with the type of the object you are filtering (e.g: AccountAttributes)
-    const where: WhereOptions<any> = {};
+    const where: WhereOptions<AccountAttributes> = {};
 
-    if (resolvedSearch) where.name = { [Op.like]: `%${resolvedSearch}%` };
+    if (resolvedSearch) where.Username = { [Op.like]: `%${resolvedSearch}%` };
 
     const accounts = await dataContext.Account.findAndCountAll({
         where,
-        order: [['id', 'desc']],
+        order: [['id', 'asc']],
         limit: resolvedTop,
         offset: resolvedSkip,
     });
@@ -90,6 +95,7 @@ routes.get('/', Authenticated, IsAdmin, async (req, res) => {
             username: account.Username,
             role: account.Role,
             creationDate: account.CreatedAt,
+            updateDate: account.UpdatedAt ?? account.CreatedAt,
         })),
     };
 
@@ -128,5 +134,43 @@ routes.patch(
         res.status(StatusCodeEnum.OK).send();
     },
 );
+
+/**
+ * Update account role
+ * @route PATCH /accounts/:accountId/role
+ * @group Accounts - Operations about accounts
+ * @param {AccountUpdateRoleRequest.model} data.body.required
+ * @returns {AccountUpdateRoleDTO.model} 200
+ * @returns 400
+ * @returns 401 - User is not logged in
+ * @returns 403 - User doesn't have permissions to make this action
+ * @returns 500 - An error has occurred
+ * @security JWT
+ */
+routes.patch('/:accountId/role', Authenticated, IsAdmin, async (req, res) => {
+    const loggedInAccount = req.account as Account;
+    const accountId = Number(req.params.accountId);
+    const { role } = req.body as AccountUpdateRoleRequest;
+
+    const { error, account } = await validateAccountUpdateRole({
+        accountId,
+        role,
+        loggedInAccount,
+    });
+
+    if (error || !account)
+        return res.status(StatusCodeEnum.BadRequest).send({ error });
+
+    await account.update({ Role: role });
+
+    const result: AccountUpdateRoleDTO = {
+        id: account.Id,
+        email: account.Email,
+        username: account.Username,
+        role: account.Role,
+    };
+
+    return res.status(StatusCodeEnum.OK).send(result);
+});
 
 export default routes;
